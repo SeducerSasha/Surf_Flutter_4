@@ -10,7 +10,7 @@ class PhotosApi implements IPhotosApi {
   @override
   Future<List<Photos>> getPhotosData() async {
     /// Получение данных о фотографиях в формате JSON.
-    String photosJSON = await _loadJSonData();
+    final photosJSON = await _loadJSonData();
 
     /// Преобразование данных JSON в данные класса Photos.
     return PhotosData.fromJson(photosJSON).photos;
@@ -31,19 +31,20 @@ class PhotosApi implements IPhotosApi {
         await (http.get(Uri.parse('$url?offset=$offset&limit=$limit')));
 
     /// Обработка статусов ответа сервера.
-    if (response.statusCode >= 500) {
-      throw 'Ошибка сервера';
-    } else if (response.statusCode >= 400) {
-      throw 'Ошибка клиента';
-    } else if (response.statusCode == 200) {
-      final decoded = jsonDecode(response.body);
-      if (decoded['success'] == false) {
-        return '';
-      } else {
-        return response.body;
-      }
-    } else {
-      throw Exception('Неизвестная ошибка');
+    switch (response.statusCode) {
+      case 200:
+        final decoded = jsonDecode(response.body);
+        if (decoded['success'] == false) {
+          return '';
+        } else {
+          return response.body;
+        }
+      case >= 500:
+        throw 'Ошибка сервера';
+      case >= 400 && < 500:
+        throw 'Ошибка клиента';
+      default:
+        throw Exception('Неизвестная ошибка');
     }
   }
 }

@@ -9,8 +9,11 @@ class CarouselScreen extends StatefulWidget {
 
   /// Номер фотографии, на которой нажали.
   final int currentPhoto;
-  const CarouselScreen(
-      {super.key, required this.photos, required this.currentPhoto});
+  const CarouselScreen({
+    super.key,
+    required this.photos,
+    required this.currentPhoto,
+  });
 
   @override
   State<CarouselScreen> createState() => _CarouselScreenState();

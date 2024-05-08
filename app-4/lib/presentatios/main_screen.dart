@@ -33,7 +33,7 @@ class GridPhotos extends StatelessWidget {
     return FutureBuilder(
       /// Строим сетку на основе полученных данных.
       future: photos,
-      builder: (context, snapshot) {
+      builder: (_, snapshot) {
         if (!snapshot.hasData) {
           /// Если данных еще нет - показывает индикатор прогресса.
           return const Center(child: CircularProgressIndicator());
